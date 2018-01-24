@@ -22,7 +22,6 @@ app.post('/command',jsonParser,(req,res) => {
         data: 'PONG'
       })
       break;
-  
     default:
       break;
   }
