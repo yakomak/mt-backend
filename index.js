@@ -2,6 +2,7 @@ var express = require ('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
 var session = require('express-session')
+var hash = require("pbkdf2-password")()
 
 var app = express()
 
@@ -13,6 +14,28 @@ app.use(session({
 
 var jsonParser = bodyParser.json()
 
+var users = {
+  admin: {
+    name: 'admin'
+  }
+}
+
+// генерим первый хэш для admin-юзера
+hash({ password: 'secret' }, (err, pass, salt, hash) => {
+  if (err) throw err
+  users.admin.salt = salt
+  users.admin.hash = hash
+})
+
+var auth = (name, password, callback) => {
+  const user = users[name]
+  if (!user) return callback(new Error('cannot find user'))
+  hash({ password, salt: user.salt }, (err, pass, salt, hash) => {
+    if (err) return callback(err)
+    if (hash === user.hash) return callback(null, user)
+    callback(new Error('invalid password'))
+  })
+}
 app.use(cors())
 
 app.get('/',(req,res) => {
