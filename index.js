@@ -1,8 +1,15 @@
 var express = require ('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
+var session = require('express-session')
 
 var app = express()
+
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: 'shhhh, very secret'
+}))
 
 var jsonParser = bodyParser.json()
 
