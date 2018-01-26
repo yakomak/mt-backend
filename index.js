@@ -54,11 +54,8 @@ app.get('/',(req,res) => {
   res.send('magtool v.0.1.0')
 })
 
-app.post('/command',jsonParser,(req,res) => {
-app.post('/login',jsonParser,(req,res) => {
 app.post('/login', jsonParser, (req, res) => {
   if (!req.body) return res.sendStatus(400)
-  auth(req.body.username,req.body.password, (err, user) => {
   auth(req.body.username, req.body.password, (err, user) => {
     if(err || !user){
       res.json({
@@ -69,9 +66,6 @@ app.post('/login', jsonParser, (req, res) => {
     }
 
     req.session.regenerate(() => {
-       req.session.user = user
-       res.json({
-        status: 'OK',
       req.session.user = user
       res.json({
         status: 'OK'
