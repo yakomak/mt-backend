@@ -36,6 +36,7 @@ var auth = (name, password, callback) => {
     callback(new Error('invalid password'))
   })
 }
+
 var checkAuth = (req, res, next) => {
   if (req.session.user) {
     next()
@@ -46,6 +47,7 @@ var checkAuth = (req, res, next) => {
     })
   }
 }
+
 app.use(cors())
 
 app.get('/',(req,res) => {
@@ -54,8 +56,10 @@ app.get('/',(req,res) => {
 
 app.post('/command',jsonParser,(req,res) => {
 app.post('/login',jsonParser,(req,res) => {
+app.post('/login', jsonParser, (req, res) => {
   if (!req.body) return res.sendStatus(400)
   auth(req.body.username,req.body.password, (err, user) => {
+  auth(req.body.username, req.body.password, (err, user) => {
     if(err || !user){
       res.json({
         status: 'FAIL',
@@ -63,14 +67,20 @@ app.post('/login',jsonParser,(req,res) => {
       })
       return
     }
+
     req.session.regenerate(() => {
        req.session.user = user
        res.json({
         status: 'OK',
+      req.session.user = user
+      res.json({
+        status: 'OK'
       })
     })
   })
 })
+
+app.post('/command',checkAuth,jsonParser,(req,res) => {
   if (!req.body) return res.sendStatus(400)
   const cmd = req.body.command
   switch (cmd) {
@@ -79,9 +89,9 @@ app.post('/login',jsonParser,(req,res) => {
         status: 'OK',
         data: 'PONG'
       })
-      break;
+      break
     default:
-      break;
+      break
   }
 })
 
@@ -92,6 +102,7 @@ app.post('/logout',jsonParser,(req,res) => {
     })
   })
 })
+
 var port = process.env.PORT || 3000
 app.listen(port)
 console.log(`Example app listening on port ${port}!`)
