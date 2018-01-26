@@ -3,6 +3,7 @@ var cors = require('cors')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var hash = require('pbkdf2-password')()
+var config = require('./ets/config.json')
 var redis = require('redis')
 
 var rdb = redis.createClient(6400) // eslint-disable-line
@@ -100,6 +101,5 @@ app.post('/logout', jsonParser, (req, res) => {
   })
 })
 
-var port = process.env.PORT || 3000
-app.listen(port)
-console.log(`Example app listening on port ${port}!`)
+app.listen(config.port)
+console.log(`Example app listening on port ${config.port}!`)
