@@ -53,6 +53,15 @@ app.get('/',(req,res) => {
 })
 
 app.post('/command',jsonParser,(req,res) => {
+app.post('/login',jsonParser,(req,res) => {
+  if (!req.body) return res.sendStatus(400)
+  auth(req.body.username,req.body.password, (err, user) => {
+    if(err || !user){
+      res.json({
+        status: 'FAIL',
+        error: 'invalid username or password'
+      })
+    }
   if (!req.body) return res.sendStatus(400)
   const cmd = req.body.command
   switch (cmd) {
