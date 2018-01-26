@@ -62,6 +62,14 @@ app.post('/login',jsonParser,(req,res) => {
         error: 'invalid username or password'
       })
     }
+    req.session.regenerate(() => {
+       req.session.user = user
+       res.json({
+        status: 'OK',
+      })
+    })
+  })
+})
   if (!req.body) return res.sendStatus(400)
   const cmd = req.body.command
   switch (cmd) {
