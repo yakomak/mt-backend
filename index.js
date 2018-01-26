@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 var hash = require('pbkdf2-password')()
 var config = require('./ets/config.json')
+var config = require('./etc/config.json')
 var redis = require('redis')
 
 var rdb = redis.createClient(6400) // eslint-disable-line
