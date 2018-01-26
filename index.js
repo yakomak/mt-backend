@@ -76,6 +76,13 @@ app.post('/login',jsonParser,(req,res) => {
   }
 })
 
+app.post('/logout',jsonParser,(req,res) => {
+  req.session.destroy(() => {
+    res.json({
+        status: 'OK'
+    })
+  })
+})
 var port = process.env.PORT || 3000
 app.listen(port)
 console.log(`Example app listening on port ${port}!`)
