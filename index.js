@@ -61,6 +61,7 @@ app.post('/login',jsonParser,(req,res) => {
         status: 'FAIL',
         error: 'invalid username or password'
       })
+      return
     }
     req.session.regenerate(() => {
        req.session.user = user
