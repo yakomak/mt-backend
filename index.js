@@ -1,8 +1,8 @@
-var express = require ('express')
+var express = require('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
 var session = require('express-session')
-var hash = require("pbkdf2-password")()
+var hash = require('pbkdf2-password')()
 
 var app = express()
 
@@ -50,14 +50,14 @@ var checkAuth = (req, res, next) => {
 
 app.use(cors())
 
-app.get('/',(req,res) => {
+app.get('/', (req, res) => {
   res.send('magtool v.0.1.0')
 })
 
 app.post('/login', jsonParser, (req, res) => {
   if (!req.body) return res.sendStatus(400)
   auth(req.body.username, req.body.password, (err, user) => {
-    if(err || !user){
+    if (err || !user) {
       res.json({
         status: 'FAIL',
         error: 'invalid username or password'
@@ -74,7 +74,7 @@ app.post('/login', jsonParser, (req, res) => {
   })
 })
 
-app.post('/command',checkAuth,jsonParser,(req,res) => {
+app.post('/command', checkAuth, jsonParser, (req, res) => {
   if (!req.body) return res.sendStatus(400)
   const cmd = req.body.command
   switch (cmd) {
@@ -89,10 +89,10 @@ app.post('/command',checkAuth,jsonParser,(req,res) => {
   }
 })
 
-app.post('/logout',jsonParser,(req,res) => {
+app.post('/logout', jsonParser, (req, res) => {
   req.session.destroy(() => {
     res.json({
-        status: 'OK'
+      status: 'OK'
     })
   })
 })
